@@ -1,0 +1,99 @@
+*,::before,::after {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-image: radial-gradient(circle, rgb(237, 228, 240) 0%, rgb(150, 150, 150) 100%);
+    display: flex;
+    justify-content:center;
+    align-items: center;   
+    font-family: Arial, Helvetica, sans-serif; 
+}
+
+.calculator {
+    box-shadow: 0px 0px 24px 0px rgba(4, 4, 4, 0.5);
+    border-radius: 10px 0 0 0;
+    min-height: 600px;
+    height: 60vh;
+    width: 400px;
+    overflow: hidden;
+}
+
+.history {
+    background-color: rgba(61, 54, 63, 0.1);
+    box-shadow: 0px 0px 24px 0px rgba(4, 4, 4, 0.5);
+    margin: 0 15px;
+    min-height: 600px;
+    min-width: 150px;
+    max-width: 400px;
+    border-radius: 0 10px 0 0;
+    display: flex;
+    flex-direction: column;
+    color: rgba(4, 4, 4, 0.8);;
+}
+
+#hist-list >* {
+    list-style: none;
+    padding: 2px 4px;   
+}
+
+.display {
+    height: 25%;
+    background-color: rgba(61, 54, 63, 0.6);
+    padding: 0.5rem;
+    color: white;
+    font-size: 2rem;
+    text-align: right;
+    line-height: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#calc-insert {
+    font-size: 1.5rem;
+    color: rgb(255, 255, 255, 0.5)
+}
+
+
+.keys {
+    height: 75%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px
+    
+}
+.equal {
+    grid-row: 2/6;
+    grid-column: 4/5;
+    background-color: rgb(226, 0, 94, 0.2);
+}
+
+.plus, .minus, .times, .divide {
+    background-color: rgba(61, 54, 63, 0.1);
+}
+
+.keys button {
+    border:none;
+    padding: 1rem 0.5rem;
+    font-size: 1.5rem;
+    color: rgba(4, 4, 4, 0.8);
+    font-weight: bold;
+}
+
+button:hover,
+button:focus {
+    opacity: 60%;
+    outline: 2px solid rgba(61, 54, 63, 0.8)
+
+}
+
+#clear {
+    border: none;
+    background-color: rgb(226, 0, 94, 0.2);
+    font-size: 1rem;
+    padding: 0.2rem;
+    box-shadow: inset 0px 0px 12px 0px rgba(4, 4, 4, 0.5);
+}   
