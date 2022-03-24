@@ -100,7 +100,7 @@ window.addEventListener('keyup', (event) => {
             display.innerText += pressedKey;
             break;
         default:
-            console.error('Not supported button click!');
+            console.error('Not supported key press!');
     }
 });
 
