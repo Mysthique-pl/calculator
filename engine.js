@@ -4,10 +4,10 @@ const history = document.getElementById('hist-list');
 const buttons = Array.from(document.getElementsByTagName('button'));
 
 buttons.forEach((button) => {
-    button.addEventListener('click', calculate);
+    button.addEventListener('click', onButtonClick);
 });
 
-function calculate(event) {
+function onButtonClick(event) {
     const buttonContent = event.target.innerText;
 
     switch (buttonContent) {
