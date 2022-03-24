@@ -2,12 +2,15 @@ const display = document.getElementById('display-content');
 const insert = document.getElementById('calc-insert');
 const history = document.getElementById('hist-list');
 const buttons = Array.from(document.getElementsByTagName('button'));
-console.log(buttons);
-const buttonsMap = buttons.map((button) => {
+
+buttons.forEach((button) => {
     button.addEventListener('click', calculate);
 });
-function calculate(e) {
-    switch (e.target.innerText) {
+
+function calculate(event) {
+    const buttonContent = event.target.innerText;
+
+    switch (buttonContent) {
         case 'AC':
             display.innerText = '';
             insert.innerText = '';
@@ -16,16 +19,8 @@ function calculate(e) {
             if (display.innerText == '') {
                 break;
             }
-            try {
-                insert.innerText = display.innerText + '=';
-                display.innerText = eval(display.innerText);
-                let equation = document.createElement('li');
-                let text = document.createTextNode(insert.innerHTML + display.innerHTML);
-                equation.appendChild(text);
-                history.appendChild(equation);
-            } catch {
-                display.innerText = 'Error';
-            }
+            calculateExpression();
+
             break;
         case '÷':
             if (
@@ -35,7 +30,7 @@ function calculate(e) {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
                 display.innerText += '/';
             }
@@ -48,7 +43,7 @@ function calculate(e) {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
                 display.innerText += '*';
             }
@@ -61,9 +56,9 @@ function calculate(e) {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
-                display.innerText += e.target.innerText;
+                display.innerText += buttonContent;
             }
             break;
         case '-':
@@ -73,9 +68,9 @@ function calculate(e) {
                 display.innerText[display.innerText.length - 1] === '*' ||
                 display.innerText[display.innerText.length - 1] === '/'
             ) {
-                return;
+                break;
             } else {
-                display.innerText += e.target.innerText;
+                display.innerText += buttonContent;
             }
             break;
         case '.':
@@ -90,7 +85,7 @@ function calculate(e) {
             ) {
                 display.innerText += '0.';
             } else {
-                display.innerText += e.target.innerText;
+                display.innerText += buttonContent;
             }
             break;
         case 'Clear History':
@@ -99,13 +94,13 @@ function calculate(e) {
             insert.innerText = '';
             break;
         default:
-            display.innerText += e.target.innerText;
+            display.innerText += buttonContent;
     }
 }
 
 window.addEventListener('keyup', (event) => {
-    let pressedKey = event.key;
-    //console.log(pressedKey);
+    const pressedKey = event.key;
+
     switch (pressedKey) {
         case 'Delete':
             display.innerText = '';
@@ -118,16 +113,7 @@ window.addEventListener('keyup', (event) => {
             if (display.innerText == '') {
                 break;
             }
-            try {
-                insert.innerText = display.innerText + '=';
-                display.innerText = eval(display.innerText);
-                let equation = document.createElement('li');
-                let text = document.createTextNode(insert.innerHTML + display.innerHTML);
-                equation.appendChild(text);
-                history.appendChild(equation);
-            } catch {
-                display.innerText = 'Error';
-            }
+            calculateExpression();
             break;
         case '/':
             if (
@@ -137,7 +123,7 @@ window.addEventListener('keyup', (event) => {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
                 display.innerText += '/';
             }
@@ -150,7 +136,7 @@ window.addEventListener('keyup', (event) => {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
                 display.innerText += '*';
             }
@@ -163,7 +149,7 @@ window.addEventListener('keyup', (event) => {
                 display.innerText[display.innerText.length - 1] === '/' ||
                 display.innerText === ''
             ) {
-                return;
+                break;
             } else {
                 display.innerText += pressedKey;
             }
@@ -175,7 +161,7 @@ window.addEventListener('keyup', (event) => {
                 display.innerText[display.innerText.length - 1] === '*' ||
                 display.innerText[display.innerText.length - 1] === '/'
             ) {
-                return;
+                break;
             } else {
                 display.innerText += pressedKey;
             }
@@ -211,6 +197,21 @@ window.addEventListener('keyup', (event) => {
             display.innerText += pressedKey;
             break;
         default:
-            break;
+            console.error('Not supported button click!');
     }
 });
+
+function calculateExpression() {
+    insert.innerText = display.innerText + '=';
+
+    try {
+        const result = eval(display.innerText);
+        const text = document.createTextNode(insert.innerHTML + result);
+        const equation = document.createElement('li');
+
+        equation.appendChild(text);
+        history.appendChild(equation);
+    } catch {
+        display.innerText = 'Error';
+    }
+}
