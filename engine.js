@@ -118,8 +118,8 @@ function calculateExpression() {
     insert.innerText = display.innerText + '=';
 
     try {
-        const result = eval(display.innerText);
-        const text = document.createTextNode(insert.innerHTML + result);
+        display.innerText = eval(display.innerText);
+        const text = document.createTextNode(insert.innerHTML + display.innerText);
         const equation = document.createElement('li');
 
         equation.appendChild(text);
