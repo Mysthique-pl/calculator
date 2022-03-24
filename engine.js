@@ -24,10 +24,10 @@ function calculate(event) {
             break;
         case '÷':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -37,10 +37,10 @@ function calculate(event) {
             break;
         case '×':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -50,10 +50,10 @@ function calculate(event) {
             break;
         case '+':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -63,10 +63,10 @@ function calculate(event) {
             break;
         case '-':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/'
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/'
             ) {
                 break;
             } else {
@@ -74,13 +74,13 @@ function calculate(event) {
             }
             break;
         case '.':
-            if (display.innerText[display.innerText.length - 1] === '.') {
+            if (getLastDisplayChar() === '.') {
                 break;
             } else if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 display.innerText += '0.';
@@ -117,10 +117,10 @@ window.addEventListener('keyup', (event) => {
             break;
         case '/':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -130,10 +130,10 @@ window.addEventListener('keyup', (event) => {
             break;
         case '*':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -143,10 +143,10 @@ window.addEventListener('keyup', (event) => {
             break;
         case '+':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 break;
@@ -156,10 +156,10 @@ window.addEventListener('keyup', (event) => {
             break;
         case '-':
             if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/'
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/'
             ) {
                 break;
             } else {
@@ -168,13 +168,13 @@ window.addEventListener('keyup', (event) => {
             break;
         case ',':
         case '.':
-            if (display.innerText[display.innerText.length - 1] === '.') {
+            if (getLastDisplayChar() === '.') {
                 break;
             } else if (
-                display.innerText[display.innerText.length - 1] === '+' ||
-                display.innerText[display.innerText.length - 1] === '-' ||
-                display.innerText[display.innerText.length - 1] === '*' ||
-                display.innerText[display.innerText.length - 1] === '/' ||
+                getLastDisplayChar() === '+' ||
+                getLastDisplayChar() === '-' ||
+                getLastDisplayChar() === '*' ||
+                getLastDisplayChar() === '/' ||
                 display.innerText === ''
             ) {
                 display.innerText += '0.';
@@ -202,6 +202,11 @@ window.addEventListener('keyup', (event) => {
 });
 
 function calculateExpression() {
+    if (display.innerText.toLocaleLowerCase().includes('error')) {
+        display.innerText = '';
+        return;
+    }
+
     insert.innerText = display.innerText + '=';
 
     try {
@@ -214,4 +219,8 @@ function calculateExpression() {
     } catch {
         display.innerText = 'Error';
     }
+}
+
+function getLastDisplayChar() {
+    return display.innerText[display.innerText.length - 1];
 }
