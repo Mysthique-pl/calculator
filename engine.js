@@ -16,73 +16,28 @@ function calculate(event) {
             insert.innerText = '';
             break;
         case '=':
-            if (display.innerText == '') {
-                break;
-            }
             calculateExpression();
-
             break;
         case '÷':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
+            if (isOperatorAllowed()) {
                 display.innerText += '/';
             }
             break;
         case '×':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
+            if (isOperatorAllowed()) {
                 display.innerText += '*';
             }
             break;
-        case '+':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
-                display.innerText += buttonContent;
-            }
-            break;
         case '-':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/'
-            ) {
-                break;
-            } else {
+        case '+':
+            if (isOperatorAllowed()) {
                 display.innerText += buttonContent;
             }
             break;
         case '.':
             if (getLastDisplayChar() === '.') {
                 break;
-            } else if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
+            } else if (isLastCharOperator() || isDisplayEmpty()) {
                 display.innerText += '0.';
             } else {
                 display.innerText += buttonContent;
@@ -110,59 +65,13 @@ window.addEventListener('keyup', (event) => {
             display.innerText = '';
             break;
         case 'Enter':
-            if (display.innerText == '') {
-                break;
-            }
             calculateExpression();
             break;
         case '/':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
-                display.innerText += '/';
-            }
-            break;
         case '*':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
-                display.innerText += '*';
-            }
-            break;
         case '+':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
-                break;
-            } else {
-                display.innerText += pressedKey;
-            }
-            break;
         case '-':
-            if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/'
-            ) {
-                break;
-            } else {
+            if (isOperatorAllowed()) {
                 display.innerText += pressedKey;
             }
             break;
@@ -170,13 +79,7 @@ window.addEventListener('keyup', (event) => {
         case '.':
             if (getLastDisplayChar() === '.') {
                 break;
-            } else if (
-                getLastDisplayChar() === '+' ||
-                getLastDisplayChar() === '-' ||
-                getLastDisplayChar() === '*' ||
-                getLastDisplayChar() === '/' ||
-                display.innerText === ''
-            ) {
+            } else if (isLastCharOperator() || isDisplayEmpty()) {
                 display.innerText += '0.';
             } else {
                 display.innerText += '.';
@@ -202,7 +105,12 @@ window.addEventListener('keyup', (event) => {
 });
 
 function calculateExpression() {
-    if (display.innerText.toLocaleLowerCase().includes('error')) {
+    const expression = display.innerText.toLocaleLowerCase().trim();
+
+    if (!expression) {
+        return;
+    }
+    if (expression.includes('error')) {
         display.innerText = '';
         return;
     }
@@ -223,4 +131,16 @@ function calculateExpression() {
 
 function getLastDisplayChar() {
     return display.innerText[display.innerText.length - 1];
+}
+
+function isDisplayEmpty() {
+    return display.innerText === '';
+}
+
+function isLastCharOperator() {
+    return ['+', '-', '*', '/'].includes(getLastDisplayChar());
+}
+
+function isOperatorAllowed() {
+    return !isLastCharOperator() && !isDisplayEmpty();
 }
