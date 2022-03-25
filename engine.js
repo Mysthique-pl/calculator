@@ -29,6 +29,9 @@ function onButtonClick(event) {
             }
             break;
         case '-':
+             if ( isDisplayEmpty() || !isLastCharOperator() ) {
+                display.innerText += buttonContent; }
+            break;
         case '+':
             if (isOperatorAllowed()) {
                 display.innerText += buttonContent;
@@ -70,10 +73,13 @@ window.addEventListener('keyup', (event) => {
         case '/':
         case '*':
         case '+':
-        case '-':
             if (isOperatorAllowed()) {
                 display.innerText += pressedKey;
             }
+            break;
+        case '-':
+            if ( isDisplayEmpty() || !isLastCharOperator() ) {
+                display.innerText += pressedKey; }
             break;
         case ',':
         case '.':
