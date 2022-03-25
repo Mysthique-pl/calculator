@@ -2,179 +2,89 @@ const display = document.getElementById('display-content');
 const insert = document.getElementById('calc-insert');
 const history = document.getElementById('hist-list');
 const buttons = Array.from(document.getElementsByTagName('button'));
-console.log(buttons);
-const buttonsMap = buttons.map (button => {
-    button.addEventListener('click',calculate)}); 
-function calculate(e) {
-        switch(e.target.innerText){
-            case 'AC':
-                display.innerText = "";
-                insert.innerText = "";
-                break;
-            case '=':
-                if(display.innerText == "") {break}
-                try{
-                    insert.innerText = display.innerText + '=';
-                    display.innerText = eval(display.innerText);
-                    let equation = document.createElement('li');
-                    let text = document.createTextNode(insert.innerHTML + display.innerHTML);
-                    equation.appendChild(text);
-                    history.appendChild(equation);
-                } 
-                catch {
-                    display.innerText = "Error";
-                }
-                break;
-            case '÷':
-                if (display.innerText[display.innerText.length -1] === '+' || 
-                display.innerText[display.innerText.length -1] === '-' || 
-                display.innerText[display.innerText.length -1] === '*' ||
-                display.innerText[display.innerText.length -1] === '/' || 
-                display.innerText === '') {
-                    return;
-                } else {
-                    display.innerText += '/';
-                }
-                break;
-            case '×':
-                if (display.innerText[display.innerText.length -1] === '+' || 
-                display.innerText[display.innerText.length -1] === '-' || 
-                display.innerText[display.innerText.length -1] === '*' ||
-                display.innerText[display.innerText.length -1] === '/' || 
-                display.innerText === '') {
-                    return;
-                } else {
-                    display.innerText += '*';
-                }
-                break;
-            case '+':
-                if (display.innerText[display.innerText.length -1] === '+' || 
-                display.innerText[display.innerText.length -1] === '-' || 
-                display.innerText[display.innerText.length -1] === '*' ||
-                display.innerText[display.innerText.length -1] === '/' || 
-                display.innerText === '') {
-                    return;
-                } else {
-                    display.innerText += e.target.innerText;
-                }
-                break;
-            case '-':
-                if (display.innerText[display.innerText.length -1] === '+' || 
-                display.innerText[display.innerText.length -1] === '-' || 
-                display.innerText[display.innerText.length -1] === '*' ||
-                display.innerText[display.innerText.length -1] === '/' ) {
-                return;
-                } else {
-                    display.innerText += e.target.innerText;
-                }
-                break; 
-            case '.':
-                if (display.innerText[display.innerText.length -1] === '.') {
-                    break;
-                }   else if  (display.innerText[display.innerText.length -1] === '+' || 
-                display.innerText[display.innerText.length -1] === '-' || 
-                display.innerText[display.innerText.length -1] === '*' ||
-                display.innerText[display.innerText.length -1] === '/' ||
-                display.innerText === '') {
-                display.innerText += '0.';
-                } else {
-                    display.innerText += e.target.innerText;
-                }
-                break;   
-            case 'Clear History':
-                history.innerHTML = "";
-                display.innerText = "";
-                insert.innerText = "";
-                break;
-            default:
-                display.innerText += e.target.innerText;
-                
-        }
-    };
 
+buttons.forEach((button) => {
+    button.addEventListener('click', onButtonClick);
+});
 
-window.addEventListener('keyup', event => {
-    let pressedKey = event.key;
-    //console.log(pressedKey);
-    switch(pressedKey){
-        case 'Delete':
-            display.innerText = "";
-            insert.innerText = "";
+function onButtonClick(event) {
+    const buttonContent = event.target.innerText;
+
+    switch (buttonContent) {
+        case 'AC':
+            display.innerText = '';
+            insert.innerText = '';
             break;
-        case 'Backspace':
-            display.innerText = "";
+        case '=':
+            calculateExpression();
             break;
-        case 'Enter':
-            if(display.innerText == "") {break}
-            try{
-                insert.innerText = display.innerText + '=';
-                display.innerText = eval(display.innerText);
-                let equation = document.createElement('li');
-                let text = document.createTextNode(insert.innerHTML + display.innerHTML);
-                equation.appendChild(text);
-                history.appendChild(equation);
-            } 
-            catch {
-                display.innerText = "Error";
-            }
-            break;
-        case '/':
-            if (display.innerText[display.innerText.length -1] === '+' || 
-            display.innerText[display.innerText.length -1] === '-' || 
-            display.innerText[display.innerText.length -1] === '*' ||
-            display.innerText[display.innerText.length -1] === '/' || 
-            display.innerText === '') {
-                return;
-            } else {
+        case '÷':
+            if (isOperatorAllowed()) {
                 display.innerText += '/';
             }
             break;
-        case '*':
-            if (display.innerText[display.innerText.length -1] === '+' || 
-            display.innerText[display.innerText.length -1] === '-' || 
-            display.innerText[display.innerText.length -1] === '*' ||
-            display.innerText[display.innerText.length -1] === '/' || 
-            display.innerText === '') {
-                return;
-            } else {
+        case '×':
+            if (isOperatorAllowed()) {
                 display.innerText += '*';
             }
             break;
+        case '-':
         case '+':
-            if (display.innerText[display.innerText.length -1] === '+' || 
-            display.innerText[display.innerText.length -1] === '-' || 
-            display.innerText[display.innerText.length -1] === '*' ||
-            display.innerText[display.innerText.length -1] === '/' || 
-            display.innerText === '') {
-                return;
+            if (isOperatorAllowed()) {
+                display.innerText += buttonContent;
+            }
+            break;
+        case '.':
+            if (getLastDisplayChar() === '.') {
+                break;
+            } else if (isLastCharOperator() || isDisplayEmpty()) {
+                display.innerText += '0.';
             } else {
+                display.innerText += buttonContent;
+            }
+            break;
+        case 'Clear History':
+            history.innerHTML = '';
+            display.innerText = '';
+            insert.innerText = '';
+            break;
+        default:
+            display.innerText += buttonContent;
+    }
+}
+
+window.addEventListener('keyup', (event) => {
+    const pressedKey = event.key;
+
+    switch (pressedKey) {
+        case 'Delete':
+            display.innerText = '';
+            insert.innerText = '';
+            break;
+        case 'Backspace':
+            display.innerText = '';
+            break;
+        case 'Enter':
+            calculateExpression();
+            break;
+        case '/':
+        case '*':
+        case '+':
+        case '-':
+            if (isOperatorAllowed()) {
                 display.innerText += pressedKey;
             }
             break;
-        case '-':
-            if (display.innerText[display.innerText.length -1] === '+' || 
-            display.innerText[display.innerText.length -1] === '-' || 
-            display.innerText[display.innerText.length -1] === '*' ||
-            display.innerText[display.innerText.length -1] === '/' ) {
-            return;
-            } else {
-                display.innerText += pressedKey;
-            }
-            break; 
         case ',':
         case '.':
-            if (display.innerText[display.innerText.length -1] === '.') {
+            if (getLastDisplayChar() === '.') {
                 break;
-            }   else if (display.innerText[display.innerText.length -1] === '+' || 
-            display.innerText[display.innerText.length -1] === '-' || 
-            display.innerText[display.innerText.length -1] === '*' ||
-            display.innerText[display.innerText.length -1] === '/' ||
-            display.innerText === '') {
-            display.innerText += '0.';
-            }  else {
-                display.innerText += ".";
+            } else if (isLastCharOperator() || isDisplayEmpty()) {
+                display.innerText += '0.';
+            } else {
+                display.innerText += '.';
             }
-            break;   
+            break;
         case '1':
         case '2':
         case '3':
@@ -190,6 +100,47 @@ window.addEventListener('keyup', event => {
             display.innerText += pressedKey;
             break;
         default:
-            break;
+            console.error('Not supported key press!');
     }
 });
+
+function calculateExpression() {
+    const expression = display.innerText.toLocaleLowerCase().trim();
+
+    if (!expression) {
+        return;
+    }
+    if (expression.includes('error')) {
+        display.innerText = '';
+        return;
+    }
+
+    insert.innerText = display.innerText + '=';
+
+    try {
+        display.innerText = eval(display.innerText);
+        const text = document.createTextNode(insert.innerHTML + display.innerText);
+        const equation = document.createElement('li');
+
+        equation.appendChild(text);
+        history.appendChild(equation);
+    } catch {
+        display.innerText = 'Error';
+    }
+}
+
+function getLastDisplayChar() {
+    return display.innerText[display.innerText.length - 1];
+}
+
+function isDisplayEmpty() {
+    return display.innerText === '';
+}
+
+function isLastCharOperator() {
+    return ['+', '-', '*', '/'].includes(getLastDisplayChar());
+}
+
+function isOperatorAllowed() {
+    return !isLastCharOperator() && !isDisplayEmpty();
+}
